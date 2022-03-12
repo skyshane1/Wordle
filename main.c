@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <ncurses.h>
+#include <stdbool.h>
 
 #define SQ_HEIGHT 5
 #define SQ_WIDTH 9
@@ -14,7 +15,7 @@ void create_board(void);
 void destroy_board(void);
 
 void draw_square(int sq);
-void check_word(char word[6], char guess[6], int row, int col);
+bool check_word(char word[6], char guess[6], int row, int col);
 
 WINDOW *BOARD[30];
 
@@ -27,6 +28,7 @@ int main(int argc, char **argv)
 	int col = 0;
 	int row = 0;
 	int entered = 0;
+	bool win = false;
 
 	/* initialize curses */
 
@@ -60,7 +62,7 @@ int main(int argc, char **argv)
 		key = getch();
 		if(key == 10 && entered == 5){
 			col = 0;
-			check_word(word, guess, row, col);
+			win = check_word(word, guess, row, col);
 			row++;
 			entered = 0;
 		} else if(key == 127 && entered > 0){
@@ -74,6 +76,12 @@ int main(int argc, char **argv)
 			guess[entered] = key;
 			entered++;
 		}
+		if(win == true){
+			mvprintw(1 + (6 * SQ_HEIGHT), (COLS/2) - 5, "You win!!");
+			mvprintw(2 + (6 * SQ_HEIGHT), (COLS/2) - 9, "Press 1 to quit!");
+			row = 6;
+			entered = -1;
+		}
 
 	} while (key != 49);
 
@@ -83,8 +91,9 @@ int main(int argc, char **argv)
 	exit(0);
 }
 
-void check_word(char word[6], char guess[6], int row, int col){
+bool check_word(char word[6], char guess[6], int row, int col){
 	int gy = 0;
+	int correct = 0;
 	for(int i = 0; i < 5; i++){
 		gy = 0;
 		for(int j = 0; j < 5; j++){
@@ -102,6 +111,7 @@ void check_word(char word[6], char guess[6], int row, int col){
 			attroff(COLOR_PAIR(CORRECT_PAIR));
 			mvprintw((row * 5) + 3, ((COLS/2) - (SQ_WIDTH * 2.5)) + ((9 * col) + 4), "%c", guess[i]);
 			col++;
+			correct++;
 		} else if (gy == 1){
 			attron(COLOR_PAIR(PARTIAL_PAIR));
 			for(int i = 0; i < 3; i++){
@@ -113,6 +123,11 @@ void check_word(char word[6], char guess[6], int row, int col){
 		} else {
 			col++;
 		}	
+	}
+	if(correct == 5){
+		return true;
+	} else {
+		return false;
 	}
 }
 
