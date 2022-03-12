@@ -88,9 +88,9 @@ void check_word(char word[6], char guess[6], int row, int col){
 	for(int i = 0; i < 5; i++){
 		gy = 0;
 		for(int j = 0; j < 5; j++){
-			if(i == j && word[i] == guess[j]){
+			if(i == j && word[j] == guess[i]){
 				gy = 2;
-			} else if (word[i] == guess[j] && gy != 2){
+			} else if (word[j] == guess[i] && gy != 2){
 				gy = 1;
 			}
 		}
