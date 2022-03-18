@@ -72,9 +72,8 @@ void game()
 	} while (key != 49);
 
 	destroy_board();
-
+	clear();
 	endwin();
-	exit(0);
 }
 
 bool check_word(char word[6], char guess[6], int row, int col){
