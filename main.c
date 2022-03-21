@@ -1,3 +1,7 @@
+/**
+ * some code, specifically the ncurses menu game UX, borrowed and modified from https://www.linuxjournal.com/content/programming-text-windows-ncurses
+ */
+
 #include <stdlib.h>
 #include <ncurses.h>
 #include <stdbool.h>
@@ -70,7 +74,23 @@ void draw_menu()
 {
 	for(int i = 0; i < 5; i++){
 		draw_option(i);
-		mvprintw((i * 5) + 3, (COLS/2) - (3), "DAILY");
+		switch (i){
+			case 0:
+				mvprintw((i * 5) + 3, (COLS/2) - (3), "DAILY");
+				break;
+			case 1:
+				mvprintw((i * 5) + 3, (COLS/2) - (4), "PRACTICE");
+				break;
+			case 2:
+				mvprintw((i * 5) + 3, (COLS/2) - (3), "STATS");
+				break;
+			case 3:
+				mvprintw((i * 5) + 3, (COLS/2) - (6), "INSTRUCTIONS");
+				break;
+			case 4:
+				mvprintw((i * 5) + 3, (COLS/2) - (4), "SETTINGS");
+				break;
+		}
 	}
 }
 
