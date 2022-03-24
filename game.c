@@ -78,12 +78,20 @@ void game()
 bool check_word(char word[6], char guess[6], int row, int col){
 	int gy = 0;
 	int correct = 0;
+	int dup[5]={0,0,0,0,0};
+	for(int k = 0; k < 5; k++){
+		for(int p = 0; p < 5; p++){
+			if(word[p]==word[k])
+				dup[k]=dup[k]+1;
+		}
+	}
 	for(int i = 0; i < 5; i++){
 		gy = 0;
 		for(int j = 0; j < 5; j++){
 			if(i == j && word[j] == guess[i]){
+				dup[j]=dup[j]-1;
 				gy = 2;
-			} else if (word[j] == guess[i] && gy != 2){
+		} else if ((word[j] == guess[i] && gy != 2) && dup[j]>0){
 				gy = 1;
 			}
 		}
