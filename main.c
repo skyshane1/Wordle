@@ -28,12 +28,13 @@ int main(int argc, char **argv){
 		exit(2);
 	}
 	clear();
-
+	start_color();
 	mvprintw(0, (COLS / 2) - 4, "CWORDLE");
 	refresh();
 
 	create_menu();
 	do {
+		create_menu();
 		key = getch();
 		switch (key) {
 			case 65: //up
@@ -49,7 +50,7 @@ int main(int argc, char **argv){
 			case 10: //enter
 				if(option == 0){
 					game();
-					draw_menu();
+					mvprintw(0, (COLS / 2) - 4, "CWORDLE");
 				}
 		}
 		mvprintw(0,0,"option: %d", option);

@@ -70,7 +70,6 @@ void game()
 		}
 
 	} while (key != 49);
-
 	destroy_board();
 	clear();
 	endwin();
