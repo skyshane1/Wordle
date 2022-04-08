@@ -5,6 +5,7 @@
 
 WINDOW *BOARD[30];
 WINDOW *KEY[26];
+char keys[] = {'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m'};
 
 void game()
 {
@@ -32,6 +33,7 @@ void game()
 	start_color();
 	init_pair(CORRECT_PAIR, COLOR_GREEN, COLOR_GREEN);
 	init_pair(PARTIAL_PAIR, COLOR_YELLOW, COLOR_YELLOW);
+	init_pair(INCORRECT_PAIR, COLOR_RED, COLOR_RED);
 
 	/* print welcome text */
 
@@ -79,6 +81,10 @@ void game()
 
 bool check_word(char word[6], char guess[6], int row, int col){
 	int gy = 0;
+	int keyRow = 0;
+	int keyCol = 0;
+	double offset = 0;
+	char keyboard;
 	int correct = 0;
 	int dup[5]={0,0,0,0,0};
 	for(int k = 0; k < 5; k++){
@@ -89,6 +95,7 @@ bool check_word(char word[6], char guess[6], int row, int col){
 	}
 	for(int i = 0; i < 5; i++){
 		gy = 0;
+		keyboard = 0;
 		for(int j = 0; j < 5; j++){
 			if(i == j && word[j] == guess[i]){
 				dup[j]=dup[j]-1;
@@ -97,24 +104,56 @@ bool check_word(char word[6], char guess[6], int row, int col){
 				gy = 1;
 			}
 		}
+		int g = 0;
+		while(keyboard != guess[i]){
+			keyboard = keys[g];
+			g++;
+		}
+		mvprintw(50 + i,60, "%c key", guess[i]);
+
+		if(g <= 10){
+			keyRow = 6;
+			keyCol = g;
+			offset = 6;
+		} else if(g <= 19 && keyboard > 10){
+			keyRow = 7;
+			keyCol = g - 10;
+			offset = 5.5;
+		} else{
+			keyRow = 8;
+			keyCol = g - 19;
+			offset = 4.5;
+		}
 		if(gy == 2){
 			attron(COLOR_PAIR(CORRECT_PAIR));
 			for(int i = 0; i < 3; i++){
 				mvhline((row * 5)+2+ i, (COLS/2 - (SQ_WIDTH*2.5)) + ((9 * col) + 1),CORRECT, 7);
+				mvhline((SQ_HEIGHT * keyRow) + 4 + i, (keyCol * SQ_WIDTH)+ 1 +((COLS/2) - (SQ_WIDTH * offset)),CORRECT, 7); 
 			}
 			attroff(COLOR_PAIR(CORRECT_PAIR));
 			mvprintw((row * 5) + 3, ((COLS/2) - (SQ_WIDTH * 2.5)) + ((9 * col) + 4), "%c", guess[i]);
+			mvprintw((SQ_HEIGHT * keyRow) + 5, (keyCol * SQ_WIDTH) + 4 +((COLS/2) - (SQ_WIDTH * offset)), "%c", guess[i]);
 			col++;
 			correct++;
 		} else if (gy == 1){
 			attron(COLOR_PAIR(PARTIAL_PAIR));
 			for(int i = 0; i < 3; i++){
 				mvhline((row * 5)+2+ i, (COLS/2 - (SQ_WIDTH*2.5)) + ((9 * col) + 1),PARTIAL, 7);
+				mvhline((SQ_HEIGHT * keyRow) + 4 + i, (keyCol * SQ_WIDTH)+ 1 +((COLS/2) - (SQ_WIDTH * offset)),CORRECT, 7);
 			}
 			attroff(COLOR_PAIR(PARTIAL_PAIR));
 			mvprintw((row * 5) + 3, ((COLS/2) - (SQ_WIDTH * 2.5)) + ((9 * col) + 4), "%c", guess[i]);
+			mvprintw((SQ_HEIGHT * keyRow) + 5, (keyCol * SQ_WIDTH) + 4 +((COLS/2) - (SQ_WIDTH * offset)), "%c", guess[i]);
 			col++;
-		} else {
+		} else{
+			attron(COLOR_PAIR(INCORRECT_PAIR));
+			for(int i = 0; i < 3; i++){
+				mvhline((row * 5)+2+ i, (COLS/2 - (SQ_WIDTH*2.5)) + ((9 * col) + 1),PARTIAL, 7);
+				mvhline((SQ_HEIGHT * keyRow) + 4 + i, (keyCol * SQ_WIDTH)+ 1 +((COLS/2) - (SQ_WIDTH * offset)),CORRECT, 7);
+			}
+			attroff(COLOR_PAIR(INCORRECT_PAIR));
+			mvprintw((row * 5) + 3, ((COLS/2) - (SQ_WIDTH * 2.5)) + ((9 * col) + 4), "%c", guess[i]);
+			mvprintw((SQ_HEIGHT * keyRow) + 5, (keyCol * SQ_WIDTH) + 4 +((COLS/2) - (SQ_WIDTH * offset)), "%c", guess[i]);
 			col++;
 		}	
 	}
@@ -128,7 +167,6 @@ bool check_word(char word[6], char guess[6], int row, int col){
 void create_keys() {
 	int i;
 	int starty, startx;
-	char keys[] = {'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m'};
 
 	starty = (SQ_HEIGHT * 6) + 3;
 	for (int i = 0; i < 10; i++) {

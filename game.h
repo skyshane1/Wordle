@@ -7,9 +7,12 @@
 
 #define CORRECT '@'
 #define PARTIAL '#'
+#define INCORRECT '$'
 
 #define CORRECT_PAIR 1
 #define PARTIAL_PAIR 2
+#define INCORRECT_PAIR 3
+
 void game(void);
 void create_board(void);
 void destroy_everything(void);
