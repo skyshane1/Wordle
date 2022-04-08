@@ -6,6 +6,7 @@
 #include <ncurses.h>
 #include <stdbool.h>
 #include "game.h"
+#include "stats.h"
 
 void create_menu();
 void draw_option(int sq);
@@ -50,6 +51,9 @@ int main(int argc, char **argv){
 			case 10: //enter
 				if(option == 0){
 					game();
+					mvprintw(0, (COLS / 2) - 4, "CWORDLE");
+				}else if(option == 2){
+					stats();
 					mvprintw(0, (COLS / 2) - 4, "CWORDLE");
 				}
 		}
