@@ -4,6 +4,7 @@
 #include "game.h"
 
 WINDOW *BOARD[30];
+WINDOW *KEY[26];
 
 void game()
 {
@@ -43,6 +44,7 @@ void game()
 	/* draw board */
 
 	create_board();
+	create_keys();
 
 	do {
 		key = getch();
@@ -70,7 +72,7 @@ void game()
 		}
 
 	} while (key != 49);
-	destroy_board();
+	destroy_everything();
 	clear();
 	endwin();
 }
@@ -91,7 +93,7 @@ bool check_word(char word[6], char guess[6], int row, int col){
 			if(i == j && word[j] == guess[i]){
 				dup[j]=dup[j]-1;
 				gy = 2;
-		} else if ((word[j] == guess[i] && gy != 2) && dup[j]>0){
+			} else if ((word[j] == guess[i] && gy != 2) && dup[j]>0){
 				gy = 1;
 			}
 		}
@@ -123,7 +125,42 @@ bool check_word(char word[6], char guess[6], int row, int col){
 	}
 }
 
-void create_board(void)
+void create_keys() {
+	int i;
+	int starty, startx;
+	char keys[] = {'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m'};
+
+	starty = (SQ_HEIGHT * 6) + 3;
+	for (int i = 0; i < 10; i++) {
+		startx = (i * SQ_WIDTH) + ((COLS/2) - (SQ_WIDTH * 5));
+		KEY[i] = newwin(SQ_HEIGHT, SQ_WIDTH, starty, startx);
+	}
+	for (int i = 0; i < 10; i++){
+		mvprintw(starty + 2, (i * SQ_WIDTH) + 4 + ((COLS/2) - (SQ_WIDTH * 5)), "%c", keys[i]);
+	}
+	starty = (SQ_HEIGHT * 7) + 3;
+	for (int i = 10; i < 19; i++) {
+		startx = ((i - 10) * SQ_WIDTH) + ((COLS/2) - (SQ_WIDTH * 4.5));
+		KEY[i] = newwin(SQ_HEIGHT, SQ_WIDTH, starty, startx);
+	}
+	for (int i = 10; i < 19; i++){
+		mvprintw(starty + 2, ((i-10) * SQ_WIDTH) + 4 + ((COLS/2) - (SQ_WIDTH * 4.5)), "%c", keys[i]);
+	}
+	starty = (SQ_HEIGHT * 8) + 3;
+	for (int i = 19; i < 26; i++) {
+		startx = ((i - 19) * SQ_WIDTH) + ((COLS/2) - (SQ_WIDTH * 3.5));
+		KEY[i] = newwin(SQ_HEIGHT, SQ_WIDTH, starty, startx);
+	}
+	for (int i = 19; i < 26; i++){
+		mvprintw(starty + 2, ((i - 19) * SQ_WIDTH) + 4 + ((COLS/2) - (SQ_WIDTH * 3.5)), "%c", keys[i]);
+	}
+
+	for (i = 0; i < 28; i++){
+		draw_keys(i);
+	}
+}
+
+void create_board()
 {
 	int i;
 	int starty, startx;
@@ -165,17 +202,13 @@ void create_board(void)
 	}
 
 
-	/* put border on each window and refresh */
-
 	for (i = 0; i < 30; i++) {
 		draw_square(i);
 	}
 }
 
-void destroy_board(void)
+void destroy_everything()
 {
-
-	/* erase every box and delete each window */
 
 	for (int i = 0; i < 30; i++) {
 		wborder(BOARD[i], ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
@@ -183,8 +216,20 @@ void destroy_board(void)
 
 		delwin(BOARD[i]);
 	}
+
+	for (int i = 0; i < 28; i++) {
+		wborder(KEY[i], ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+		wrefresh(KEY[i]);
+
+		delwin(KEY[i]);	
+	}
 }
 
+void draw_keys(int ks)
+{
+	box(KEY[ks], 0, 0);
+	wrefresh(KEY[ks]);
+}
 void draw_square(int sq)
 {
 	box(BOARD[sq], 0, 0);

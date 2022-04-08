@@ -12,8 +12,9 @@
 #define PARTIAL_PAIR 2
 void game(void);
 void create_board(void);
-void destroy_board(void);
-
+void destroy_everything(void);
+void create_keys(void);
 void draw_square(int sq);
+void draw_keys(int ks);
 bool check_word(char word[6], char guess[6], int row, int col);
 
