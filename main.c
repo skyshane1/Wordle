@@ -52,9 +52,11 @@ int main(int argc, char **argv){
 				if(option == 0){
 					game();
 					mvprintw(0, (COLS / 2) - 4, "CWORDLE");
+					refresh();
 				}else if(option == 2){
 					stats();
 					mvprintw(0, (COLS / 2) - 4, "CWORDLE");
+					refresh();
 				}
 		}
 		mvprintw(0,0,"option: %d", option);
