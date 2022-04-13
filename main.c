@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include "game.h"
 #include "stats.h"
+#include "help.h"
 
 void create_menu();
 void draw_option(int sq);
@@ -32,11 +33,12 @@ int main(int argc, char **argv){
 	start_color();
 	mvprintw(0, (COLS / 2) - 4, "CWORDLE");
 	refresh();
-
+	mvprintw((option*HEIGHT) + 1 + HEIGHT/2, (COLS / 2 - 11), ">");
 	create_menu();
 	do {
 		create_menu();
 		key = getch();
+		mvprintw((option*HEIGHT) + 1 + HEIGHT/2, (COLS / 2 - 11), " ");
 		switch (key) {
 			case 65: //up
 				if(option > 0){
@@ -44,7 +46,7 @@ int main(int argc, char **argv){
 				}
 				break;
 			case 66: //down
-				if(option < 5){
+				if(option < 4){
 					option++;
 				}
 				break;
@@ -57,8 +59,13 @@ int main(int argc, char **argv){
 					stats();
 					mvprintw(0, (COLS / 2) - 4, "CWORDLE");
 					refresh();
+				}else if(option == 3){
+					help();
+					mvprintw(0, (COLS / 2) - 4, "CWORDLE");
+					refresh();
 				}
 		}
+		mvprintw((option*HEIGHT) +1+ HEIGHT/2, (COLS / 2 - 11), ">");
 		mvprintw(0,0,"option: %d", option);
 		mvprintw(1,0,"press: %d", key);	
 	} while (key != 'q');
@@ -83,7 +90,7 @@ void draw_menu()
 		draw_option(i);
 		switch (i){
 			case 0:
-				mvprintw((i * 5) + 3, (COLS/2) - (3), "DAILY");
+				mvprintw((i * 5) + 3, (COLS/2) - (3), "PLAY!");
 				break;
 			case 1:
 				mvprintw((i * 5) + 3, (COLS/2) - (4), "PRACTICE");

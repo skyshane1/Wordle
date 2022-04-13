@@ -68,12 +68,12 @@ void game()
 		}
 		if(win == true){
 			mvprintw(1 + (6 * SQ_HEIGHT), (COLS/2) - 5, "You win!!");
-			mvprintw(2 + (6 * SQ_HEIGHT), (COLS/2) - 9, "Press 1 to quit!");
+			mvprintw(2 + (6 * SQ_HEIGHT), (COLS/2) - 9, "Press ESC to quit!");
 			row = 6;
 			entered = -1;
 		}
 
-	} while (key != 49);
+	} while (key != 27);
 	destroy_everything();
 	clear();
 	endwin();
