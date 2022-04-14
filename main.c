@@ -8,6 +8,7 @@
 #include "game.h"
 #include "stats.h"
 #include "help.h"
+#include "BST.h"
 
 void create_menu();
 void draw_option(int sq);
@@ -19,6 +20,7 @@ int WIDTH = 18;
 WINDOW *MENU[5];
 
 int main(int argc, char **argv){
+	BST *bst = create_bst();
 	int key;
 	int option = 0;
 	initscr();
