@@ -38,7 +38,6 @@ int main(int argc, char **argv){
 	mvprintw((option*HEIGHT) + 1 + HEIGHT/2, (COLS / 2 - 11), ">");
 	create_menu();
 	do {
-		create_menu();
 		key = getch();
 		mvprintw((option*HEIGHT) + 1 + HEIGHT/2, (COLS / 2 - 11), " ");
 		switch (key) {
@@ -57,14 +56,17 @@ int main(int argc, char **argv){
 					game();
 					mvprintw(0, (COLS / 2) - 4, "CWORDLE");
 					refresh();
+					create_menu();
 				}else if(option == 2){
 					stats();
 					mvprintw(0, (COLS / 2) - 4, "CWORDLE");
 					refresh();
+					create_menu();
 				}else if(option == 3){
 					help();
 					mvprintw(0, (COLS / 2) - 4, "CWORDLE");
 					refresh();
+					create_menu();
 				}
 		}
 		mvprintw((option*HEIGHT) +1+ HEIGHT/2, (COLS / 2 - 11), ">");
