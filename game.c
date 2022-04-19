@@ -15,6 +15,7 @@ void game(int flag, char s[5], BST *p){
 	int sq;
 	int col = 0;
 	int row = 0;
+	int won_row = 0;
 	int entered = 0;
 	bool win = false;
 
@@ -69,88 +70,88 @@ void game(int flag, char s[5], BST *p){
 		if(win == true){
 			mvprintw(1 + (6 * SQ_HEIGHT), (COLS/2) - 5, "You win!!");
 			mvprintw(2 + (6 * SQ_HEIGHT), (COLS/2) - 9, "Press ESC to quit!");
+			won_row = row;
 			row = 6;
 			entered = -1;
-			if(flag==0){
-				//read the file to get the data first
-				FILE *fin = fopen("stats_data.txt", "r");
-				if(fin == NULL){
-					printf("File not found!");
-					exit(-1);
-				}
-				int win, played, streak, mstreak=0;
-				double scores[6];
-				fscanf(fin, "%d", &win);
-				fscanf(fin, "%d", &played);
-				fscanf(fin, "%d", &streak);
-				fscanf(fin, "%d", &mstreak);
-				for(int i=0; i<6; i++)
-					fscanf(fin, "%lf", &scores[i]);
-				fclose(fin);
-				
-				//update vars
-				win++;
-				played++;
-				streak++;
-				mstreak++;
-				scores[row-1]++;
-				//write the stats
-				FILE *fout = fopen("stats_data.txt", "w+");
-				if(fout == NULL){
-				}
-				fprintf(fout, "%d\n", win);
-				fprintf(fout, "%d\n", played);
-				fprintf(fout, "%d\n", streak);
-				fprintf(fout, "%d\n", mstreak);
-				for(int i=0; i<6; i++){
-					fprintf(fout, "%lf\n", scores[i]); 
-				}
-				fclose(fout); 
-			}
-
 		}
-		//	mvprintw(30, 30,"row: %d", row);
-		if(row==6 && (win != true)){	
+		if(row==6 && (win != true)){
 			mvprintw(1 + (6 * SQ_HEIGHT), (COLS/2) - 22, "You lost! Practice some more and come back!");
 			mvprintw(2 + (6 * SQ_HEIGHT), (COLS/2) - 9, "Press ESC to quit!");
 			row = 6;
 			entered = -1;
-			if(flag==0){
-                                 //read the file to get the data first
-                                 FILE *fin = fopen("stats_data.txt", "r");
-                                 if(fin == NULL){
-                                         printf("File not found!");
-                                         exit(-1);
-                                 }
-                                 int win, played, streak, mstreak=0;
-                                 double scores[6];
-                                 fscanf(fin, "%d", &win);
-                                 fscanf(fin, "%d", &played);
-                                 fscanf(fin, "%d", &streak);
-                                 fscanf(fin, "%d", &mstreak);
-                                 for(int i=0; i<6; i++)
-                                         fscanf(fin, "%lf", &scores[i]);
-                                 fclose(fin);
- 
-                                 //update vars
-                                 played++;
-                                 streak=0;
-                                 //write the stats
-                                 FILE *fout = fopen("stats_data.txt", "w+");
-                                 if(fout == NULL){
-                                 }
-                                 fprintf(fout, "%d\n", win);
-                                 fprintf(fout, "%d\n", played);
-                                 fprintf(fout, "%d\n", streak);
-                                 fprintf(fout, "%d\n", mstreak);
-                                 for(int i=0; i<6; i++){
-                                         fprintf(fout, "%lf\n", scores[i]);
-				 }
-                                 fclose(fout);
-                         }
 		}
 
 	} while (key != 27);
+	if(win == true){
+		if(flag==0){
+			FILE *fin = fopen("stats_data.txt", "r");
+			if(fin == NULL){
+				printf("File not found!");
+				exit(-1);
+			}
+			int win, played, streak, mstreak=0;
+			int scores[6];
+			fscanf(fin, "%d", &win);
+			fscanf(fin, "%d", &played);
+			fscanf(fin, "%d", &streak);
+			fscanf(fin, "%d", &mstreak);
+			for(int i=0; i<6; i++)
+				fscanf(fin, "%d", &scores[i]);
+			fclose(fin);
+				
+			win++;
+			played++;
+			streak++;
+			if(mstreak < streak){
+				mstreak++;
+			}
+			scores[won_row -1]++;
+			FILE *fout = fopen("stats_data.txt", "w+");
+			if(fout == NULL){
+			}
+			fprintf(fout, "%d\n", win);
+			fprintf(fout, "%d\n", played);
+			fprintf(fout, "%d\n", streak);
+			fprintf(fout, "%d\n", mstreak);
+			for(int i=0; i<6; i++){
+				fprintf(fout, "%d\n", scores[i]);
+			}
+			fclose(fout);
+		}
+
+	}
+	if(row==6 && (win != true)){
+		if(flag==0){
+			FILE *fin = fopen("stats_data.txt", "r");
+			if(fin == NULL){
+				printf("File not found!");
+				exit(-1);
+			}
+			int win, played, streak, mstreak=0;
+			int scores[6];
+			fscanf(fin, "%d", &win);
+			fscanf(fin, "%d", &played);
+			fscanf(fin, "%d", &streak);
+			fscanf(fin, "%d", &mstreak);
+			for(int i=0; i<6; i++)
+				fscanf(fin, "%d", &scores[i]);
+			fclose(fin);
+
+			played++;
+			streak=0;
+			FILE *fout = fopen("stats_data.txt", "w+");
+			if(fout == NULL){
+			}
+			fprintf(fout, "%d\n", win);
+			fprintf(fout, "%d\n", played);
+			fprintf(fout, "%d\n", streak);
+			fprintf(fout, "%d\n", mstreak);
+			for(int i=0; i<6; i++){
+				fprintf(fout, "%d\n", scores[i]);
+			}
+			fclose(fout);
+		}
+	}
 	destroy_everything();
 	clear();
 	endwin();

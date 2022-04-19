@@ -11,15 +11,15 @@ void stats(){
                  printf("File not found!");
 		 exit(-1);
          }
-	 int win, played, streak, mstreak=0;
+	 int win, played, streak, mstreak;
 	 double stotal, sbiggest;
-	 double scores[6];
+	 int scores[6];
          fscanf(fin, "%d", &win);
 	 fscanf(fin, "%d", &played);
 	 fscanf(fin, "%d", &streak);
 	 fscanf(fin, "%d", &mstreak);
   	 for(int i=0; i<6; i++)
-             fscanf(fin, "%lf", &scores[i]);      
+             fscanf(fin, "%d", &scores[i]);      
         fclose(fin);
       
 	stotal = 0;
@@ -39,9 +39,12 @@ void stats(){
 
 	clear();
 
+	double winp = (double) win/ (double) played;
+	winp = winp * 100;
+
 	for(int i = 0; i < 6; i++){
 		stotal += scores[i];
-		if(sbiggest < scores[i]){
+		if((double) sbiggest < (double) scores[i]){
 			sbiggest = scores[i];
 		}
 	}
@@ -52,15 +55,15 @@ void stats(){
 	refresh();
 	create_stats();
 	mvprintw(4, (COLS / 2) - 3, "STATS");
-	mvprintw(6, (COLS / 2) - 21, "Played: %d Win %: %d Streak: %d Max Streak: %d", played, win, streak, mstreak);
+	mvprintw(6, (COLS / 2) - 23, "Played: %d Win %: %.0f Streak: %d Max Streak: %d", played, winp, streak, mstreak);
 	for(int i = 0; i < 6; i++){
-		double temp = ((scores[i]/stotal) * 100) / sbiggest;
+		double temp = (((double) scores[i]/(double) stotal) * 100) / sbiggest;
 		int tempp = temp;
 		mvprintw(8+(i*2), (COLS / 2) - 21, "%d", i+1);
 		attron(COLOR_PAIR(GRAPH_PAIR));
 		mvhline(8+(i*2),(COLS/2) - 19, GRAPH, tempp + 1);
 		attroff(COLOR_PAIR(GRAPH_PAIR));
-		mvprintw(8+(i*2), ((COLS / 2) - 21) + tempp + 3, " %.0f", scores[i]);
+		mvprintw(8+(i*2), ((COLS / 2) - 21) + tempp + 3, " %d", scores[i]);
 	}
 
 	int key;
