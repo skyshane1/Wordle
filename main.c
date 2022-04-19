@@ -2,6 +2,7 @@
  * some code, specifically the ncurses menu game UX, borrowed and modified from https://www.linuxjournal.com/content/programming-text-windows-ncurses
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
 #include <stdbool.h>
@@ -20,9 +21,30 @@ int WIDTH = 18;
 WINDOW *MENU[5];
 
 int main(int argc, char **argv){
-	BST *bst = create_bst();
+	BST *guesses = create_bst();
+	char **computer_words = malloc (sizeof(char *) * 2315);
 	int key;
 	int option = 0;
+
+	FILE *guessfile = fopen("guesses", "r");
+	char temp[6];
+	while(fscanf(guessfile, "%s", temp) != EOF){
+		bst_insert(guesses, temp);
+	}
+	fclose(guessfile);
+	for(int i = 0; i < 2315; i++){
+		computer_words[i] = malloc(sizeof(char) * 6);
+	}
+	int index = 0;
+	FILE *allowedfile = fopen("allowed.txt", "r");
+	while(fscanf(guessfile, "%s", temp) != EOF){
+		strcpy(computer_words[index], temp);
+		index++;
+	}
+	srand(time(NULL));
+	int num = rand() % 2314;
+
+
 	initscr();
 	noecho();
 	cbreak();
@@ -37,6 +59,8 @@ int main(int argc, char **argv){
 	refresh();
 	mvprintw((option*HEIGHT) + 1 + HEIGHT/2, (COLS / 2 - 11), ">");
 	create_menu();
+
+	mvprintw(40,40,"test %s %d", computer_words[num], num);
 	do {
 		key = getch();
 		mvprintw((option*HEIGHT) + 1 + HEIGHT/2, (COLS / 2 - 11), " ");
