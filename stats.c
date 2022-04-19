@@ -18,7 +18,7 @@ void stats(){
 	 fscanf(fin, "%d", &played);
 	 fscanf(fin, "%d", &streak);
 	 fscanf(fin, "%d", &mstreak);
-  	 for(int i=0; i<played; i++)
+  	 for(int i=0; i<6; i++)
              fscanf(fin, "%lf", &scores[i]);      
         fclose(fin);
       

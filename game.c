@@ -2,13 +2,13 @@
 #include <ncurses.h>
 #include <stdbool.h>
 #include "game.h"
+#include "BST.h"
 
 WINDOW *BOARD[30];
 WINDOW *KEY[26];
 char keys[] = {'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m'};
 
-void game()
-{
+void game(int flag, char s[5], BST *p){
 	char key;
 	char word[6] = {'h', 'e', 'l', 'l', 'o', '\0'};
 	char guess[6] = {' ', ' ', ' ', ' ', ' ', '\0'};
@@ -71,6 +71,83 @@ void game()
 			mvprintw(2 + (6 * SQ_HEIGHT), (COLS/2) - 9, "Press ESC to quit!");
 			row = 6;
 			entered = -1;
+			if(flag==0){
+				//read the file to get the data first
+				FILE *fin = fopen("stats_data.txt", "r");
+				if(fin == NULL){
+					printf("File not found!");
+					exit(-1);
+				}
+				int win, played, streak, mstreak=0;
+				double scores[6];
+				fscanf(fin, "%d", &win);
+				fscanf(fin, "%d", &played);
+				fscanf(fin, "%d", &streak);
+				fscanf(fin, "%d", &mstreak);
+				for(int i=0; i<6; i++)
+					fscanf(fin, "%lf", &scores[i]);
+				fclose(fin);
+				
+				//update vars
+				win++;
+				played++;
+				streak++;
+				maxstreak++;
+				scsores[row-1]++;
+				//write the stats
+				FILE *fout = fopen("stats_data.txt", "w+");
+				if(fout == NULL){
+					return -1;
+				}
+				fprintf(fout, "%d\n", win);
+				fprintf(fout, "%d\n", played);
+				fprintf(fout, "%d\n", streak);
+				fprintf(fout, "%d\n", mstreak);
+				for(int i=0; i<6, i++)
+					fprintf(fout, "%lf\n", scores[i]); 
+				fclose(fout); 
+			}
+
+		}
+		//	mvprintw(30, 30,"row: %d", row);
+		if(row==6 && (win != true)){	
+			mvprintw(1 + (6 * SQ_HEIGHT), (COLS/2) - 22, "You lost! Practice some more and come back!");
+			mvprintw(2 + (6 * SQ_HEIGHT), (COLS/2) - 9, "Press ESC to quit!");
+			row = 6;
+			entered = -1;
+			if(flag==0){
+                                 //read the file to get the data first
+                                 FILE *fin = fopen("stats_data.txt", "r");
+                                 if(fin == NULL){
+                                         printf("File not found!");
+                                         exit(-1);
+                                 }
+                                 int win, played, streak, mstreak=0;
+                                 double scores[6];
+                                 fscanf(fin, "%d", &win);
+                                 fscanf(fin, "%d", &played);
+                                 fscanf(fin, "%d", &streak);
+                                 fscanf(fin, "%d", &mstreak);
+                                 for(int i=0; i<6; i++)
+                                         fscanf(fin, "%lf", &scores[i]);
+                                 fclose(fin);
+ 
+                                 //update vars
+                                 played++;
+                                 streak=0;
+                                 //write the stats
+                                 FILE *fout = fopen("stats_data.txt", "w+");
+                                 if(fout == NULL){
+                                         return -1;
+                                 }
+                                 fprintf(fout, "%d\n", win);
+                                 fprintf(fout, "%d\n", played);
+                                 fprintf(fout, "%d\n", streak);
+                                 fprintf(fout, "%d\n", mstreak);
+                                 for(int i=0; i<6, i++)
+                                         fprintf(fout, "%lf\n", scores[i]);
+                                 fclose(fout);
+                         }
 		}
 
 	} while (key != 27);
@@ -243,6 +320,7 @@ void create_board()
 	for (i = 0; i < 30; i++) {
 		draw_square(i);
 	}
+
 }
 
 void destroy_everything()
@@ -254,7 +332,6 @@ void destroy_everything()
 
 		delwin(BOARD[i]);
 	}
-
 	for (int i = 0; i < 28; i++) {
 		wborder(KEY[i], ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
 		wrefresh(KEY[i]);

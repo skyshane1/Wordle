@@ -53,7 +53,12 @@ int main(int argc, char **argv){
 				break;
 			case 10: //enter
 				if(option == 0){
-					game();
+					game(0, "cocoa", guesses);
+					mvprintw(0, (COLS / 2) - 4, "CWORDLE");
+					refresh();
+					create_menu();
+				}else if(option == 1){
+					game(1, "plane", guesses);
 					mvprintw(0, (COLS / 2) - 4, "CWORDLE");
 					refresh();
 					create_menu();

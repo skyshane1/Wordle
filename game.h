@@ -13,7 +13,7 @@
 #define PARTIAL_PAIR 2
 #define INCORRECT_PAIR 3
 
-void game(void);
+void game(int flag, char s[5], BST *p);
 void create_board(void);
 void destroy_everything(void);
 void create_keys(void);
