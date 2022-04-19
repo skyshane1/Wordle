@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <ncurses.h>
 #include <stdbool.h>
+#include <time.h>
 #include "game.h"
 #include "stats.h"
 #include "help.h"
