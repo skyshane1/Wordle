@@ -6,13 +6,23 @@
 WINDOW *STATS;
 
 void stats(){
-	int win = 5;
-	int played = 6;
-	int streak = 4;
-	int mstreak = 2;
-	double stotal = 0;
-	double sbiggest;
-	double scores[] = {0,0,11,24,19,8};
+	FILE *fin = fopen("stats_data.txt", "r");
+        if(fin == NULL){
+                 printf("File not found!");
+		 exit(-1);
+         }
+	 int win, played, streak, mstreak=0;
+	 double stotal, sbiggest;
+	 double scores[6];
+         fscanf(fin, "%d", &win);
+	 fscanf(fin, "%d", &played);
+	 fscanf(fin, "%d", &streak);
+	 fscanf(fin, "%d", &mstreak);
+  	 for(int i=0; i<played; i++)
+             fscanf(fin, "%lf", &scores[i]);      
+        fclose(fin);
+      
+	stotal = 0;
 	initscr();
 	noecho();
 	cbreak();
