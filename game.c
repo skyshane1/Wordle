@@ -67,7 +67,7 @@ void game(int flag, char s[5], BST *p){
 			guess[entered] = key;
 			entered++;
 		}
-		if(win == true){
+		if(win == true && key != 27){
 			mvprintw(1 + (6 * SQ_HEIGHT), (COLS/2) - 5, "You win!!");
 			mvprintw(2 + (6 * SQ_HEIGHT), (COLS/2) - 9, "Press ESC to quit!");
 			won_row = row;
