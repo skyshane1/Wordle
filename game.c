@@ -10,7 +10,7 @@ char keys[] = {'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','
 
 void game(int flag, char s[5], BST *p){
 	char key;
-	char word[6] = {'h', 'e', 'l', 'l', 'o', '\0'};
+	char word[6] = "cocoa";
 	char guess[6] = {' ', ' ', ' ', ' ', ' ', '\0'};
 	int sq;
 	int col = 0;
