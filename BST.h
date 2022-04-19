@@ -1,3 +1,6 @@
+#ifndef BST_H__
+#define BST_H__
+
 #include <string.h>
 #include <stdlib.h>
 
@@ -22,3 +25,4 @@ void bst_insert(BST *bst, char *data);
 Node *bst_searchAt(char *data, Node *node);
 
 char *bst_search(BST *bst, char *data);
+#endif /* BST.h */

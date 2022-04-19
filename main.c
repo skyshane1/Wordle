@@ -18,7 +18,7 @@ void draw_menu();
 int HEIGHT = 5;
 int WIDTH = 18;
 
-WINDOW *MENU[5];
+WINDOW *MENU[4];
 
 int main(int argc, char **argv){
 	BST *guesses = create_bst();
@@ -71,7 +71,7 @@ int main(int argc, char **argv){
 				}
 				break;
 			case 66: //down
-				if(option < 4){
+				if(option < 3){
 					option++;
 				}
 				break;
@@ -110,7 +110,7 @@ void create_menu()
 	int starty;
 	int center = (COLS/2) - (WIDTH/2);
 
-	for(int i = 0; i < 5; i++){
+	for(int i = 0; i < 4; i++){
 		starty = 1 + (i*HEIGHT);
 		MENU[i] = newwin(HEIGHT, WIDTH, starty, center);
 	}
@@ -119,7 +119,7 @@ void create_menu()
 
 void draw_menu()
 {
-	for(int i = 0; i < 5; i++){
+	for(int i = 0; i < 4; i++){
 		draw_option(i);
 		switch (i){
 			case 0:
@@ -133,9 +133,6 @@ void draw_menu()
 				break;
 			case 3:
 				mvprintw((i * 5) + 3, (COLS/2) - (6), "INSTRUCTIONS");
-				break;
-			case 4:
-				mvprintw((i * 5) + 3, (COLS/2) - (4), "SETTINGS");
 				break;
 		}
 	}

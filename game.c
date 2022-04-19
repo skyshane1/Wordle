@@ -92,19 +92,19 @@ void game(int flag, char s[5], BST *p){
 				win++;
 				played++;
 				streak++;
-				maxstreak++;
-				scsores[row-1]++;
+				mstreak++;
+				scores[row-1]++;
 				//write the stats
 				FILE *fout = fopen("stats_data.txt", "w+");
 				if(fout == NULL){
-					return -1;
 				}
 				fprintf(fout, "%d\n", win);
 				fprintf(fout, "%d\n", played);
 				fprintf(fout, "%d\n", streak);
 				fprintf(fout, "%d\n", mstreak);
-				for(int i=0; i<6, i++)
+				for(int i=0; i<6; i++){
 					fprintf(fout, "%lf\n", scores[i]); 
+				}
 				fclose(fout); 
 			}
 
@@ -138,14 +138,14 @@ void game(int flag, char s[5], BST *p){
                                  //write the stats
                                  FILE *fout = fopen("stats_data.txt", "w+");
                                  if(fout == NULL){
-                                         return -1;
                                  }
                                  fprintf(fout, "%d\n", win);
                                  fprintf(fout, "%d\n", played);
                                  fprintf(fout, "%d\n", streak);
                                  fprintf(fout, "%d\n", mstreak);
-                                 for(int i=0; i<6, i++)
+                                 for(int i=0; i<6; i++){
                                          fprintf(fout, "%lf\n", scores[i]);
+				 }
                                  fclose(fout);
                          }
 		}

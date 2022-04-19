@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <ncurses.h>
 #include <stdbool.h>
+#include "BST.h"
 
 #define SQ_HEIGHT 5
 #define SQ_WIDTH 9

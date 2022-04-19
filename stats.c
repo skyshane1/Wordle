@@ -47,7 +47,7 @@ void stats(){
 	}
 
 	sbiggest = ((sbiggest/stotal)* 100) / 38;
-
+	
 	mvprintw(0, (COLS / 2) - 4, "CWORDLE");
 	refresh();
 	create_stats();
