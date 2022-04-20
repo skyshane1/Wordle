@@ -174,22 +174,27 @@ bool check_word(char word[5], char guess[6], int row, int col){
 	double offset = 0;
 	char keyboard;
 	int correct = 0;
-	int dup[5]={0,0,0,0,0};
-	for(int k = 0; k < 5; k++){
-		for(int p = 0; p < 5; p++){
-			if(word[p]==word[k])
-				dup[k]=dup[k]+1;
-		}
-	}
+	char word_cpy[5];
+	strcpy(word_cpy, word);
 	for(int i = 0; i < 5; i++){
 		gy = 0;
 		keyboard = 0;
 		for(int j = 0; j < 5; j++){
 			if(i == j && word[j] == guess[i]){
-				dup[j]=dup[j]-1;
+				for(int i=0; i<5; i++){
+					if (word[j]==word_cpy[i])
+						word_cpy[i]=0;
+						break;
+				}
 				gy = 2;
-			} else if ((word[j] == guess[i] && gy != 2) && dup[j]>0){
-				gy = 1;
+			} else if ((word[j] == guess[i] && gy != 2)){
+				for(int i=0; i<5; i++){
+                                         if (word[j]==word_cpy[i])
+                                                 word_cpy[i]=0;
+						 gy = 1; // yellow
+						 break;
+                                 }
+				
 			}
 		}
 		int g = 0;
