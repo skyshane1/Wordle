@@ -43,8 +43,6 @@ int main(int argc, char **argv){
 		index++;
 	}
 	srand(time(NULL));
-	int num = rand() % 2314;
-
 
 	initscr();
 	noecho();
@@ -61,7 +59,6 @@ int main(int argc, char **argv){
 	mvprintw((option*HEIGHT) + 1 + HEIGHT/2, (COLS / 2 - 11), ">");
 	create_menu();
 
-	mvprintw(40,40,"test %s %d", computer_words[num], num);
 	do {
 		key = getch();
 		mvprintw((option*HEIGHT) + 1 + HEIGHT/2, (COLS / 2 - 11), " ");
@@ -78,12 +75,14 @@ int main(int argc, char **argv){
 				break;
 			case 10: //enter
 				if(option == 0){
-					game(0, "cocoa", guesses);
+					int num = rand() % 2314;
+					game(0, computer_words[num], guesses);
 					mvprintw(0, (COLS / 2) - 4, "CWORDLE");
 					refresh();
 					create_menu();
 				}else if(option == 1){
-					game(1, "plane", guesses);
+					int num = rand() % 2314;
+					game(1, computer_words[num], guesses);
 					mvprintw(0, (COLS / 2) - 4, "CWORDLE");
 					refresh();
 					create_menu();

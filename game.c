@@ -10,8 +10,7 @@ char keys[] = {'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','
 
 void game(int flag, char s[5], BST *p){
 	char key;
-	char word[6] = "cocoa";
-	char guess[6] = {' ', ' ', ' ', ' ', ' ', '\0'};
+	char guess[5] = {' ', ' ', ' ', ' ', ' '};
 	int sq;
 	int col = 0;
 	int row = 0;
@@ -51,11 +50,23 @@ void game(int flag, char s[5], BST *p){
 
 	do {
 		key = getch();
+		mvprintw(1 + (6 * SQ_HEIGHT), (COLS/2) - 13, "                                    ");
 		if(key == 10 && entered == 5){
 			col = 0;
-			win = check_word(word, guess, row, col);
-			row++;
-			entered = 0;
+			if(bst_search(p,guess) != NULL){
+				mvprintw(1 + (6 * SQ_HEIGHT), (COLS/2) - 10, "value %d",strcmp(s,bst_search(p,s)));
+				win = check_word(s, guess, row, col);
+				row++;
+				entered = 0;
+			} else {
+				col = 0;
+				entered = 0;
+				strcpy(guess, "     ");
+				for(int i = 0; i < 5; i++){
+					 mvprintw((row * 5) + 3, ((COLS/2) - (SQ_WIDTH * 2.5)) + ((9 * i) + 4), " ");
+				}
+				mvprintw(1 + (6 * SQ_HEIGHT), (COLS/2) - 13, "Please enter a valid word");
+			}
 		} else if(key == 127 && entered > 0){
 			col--;
 			mvprintw((row * 5) + 3, ((COLS/2) - (SQ_WIDTH * 2.5)) + ((9 * col) + 4), " ");
@@ -75,11 +86,12 @@ void game(int flag, char s[5], BST *p){
 			entered = -1;
 		}
 		if(row==6 && (win != true)){
-			mvprintw(1 + (6 * SQ_HEIGHT), (COLS/2) - 22, "You lost! Practice some more and come back!");
+			mvprintw(1 + (6 * SQ_HEIGHT), (COLS/2) - 19, "You lost! The correct word was %s!", s);
 			mvprintw(2 + (6 * SQ_HEIGHT), (COLS/2) - 9, "Press ESC to quit!");
 			row = 6;
 			entered = -1;
 		}
+		mvprintw(2 + (6 * SQ_HEIGHT), (COLS/2) - 13, "col: %d entered: %d guess: %s test", col, entered, guess);
 
 	} while (key != 27);
 	if(win == true){
@@ -98,7 +110,7 @@ void game(int flag, char s[5], BST *p){
 			for(int i=0; i<6; i++)
 				fscanf(fin, "%d", &scores[i]);
 			fclose(fin);
-				
+
 			win++;
 			played++;
 			streak++;
@@ -157,7 +169,7 @@ void game(int flag, char s[5], BST *p){
 	endwin();
 }
 
-bool check_word(char word[6], char guess[6], int row, int col){
+bool check_word(char word[5], char guess[6], int row, int col){
 	int gy = 0;
 	int keyRow = 0;
 	int keyCol = 0;
@@ -187,7 +199,6 @@ bool check_word(char word[6], char guess[6], int row, int col){
 			keyboard = keys[g];
 			g++;
 		}
-		mvprintw(50 + i,60, "%c key", guess[i]);
 
 		if(g <= 10){
 			keyRow = 6;
