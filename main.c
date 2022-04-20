@@ -99,8 +99,6 @@ int main(int argc, char **argv){
 				}
 		}
 		mvprintw((option*HEIGHT) +1+ HEIGHT/2, (COLS / 2 - 11), ">");
-		mvprintw(0,0,"option: %d", option);
-		mvprintw(1,0,"press: %d", key);	
 	} while (key != 'q');
 	endwin();
 }

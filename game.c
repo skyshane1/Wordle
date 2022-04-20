@@ -54,7 +54,6 @@ void game(int flag, char s[5], BST *p){
 		if(key == 10 && entered == 5){
 			col = 0;
 			if(bst_search(p,guess) != NULL){
-				mvprintw(1 + (6 * SQ_HEIGHT), (COLS/2) - 10, "value %d",strcmp(s,bst_search(p,s)));
 				win = check_word(s, guess, row, col);
 				row++;
 				entered = 0;
@@ -91,7 +90,6 @@ void game(int flag, char s[5], BST *p){
 			row = 6;
 			entered = -1;
 		}
-		mvprintw(2 + (6 * SQ_HEIGHT), (COLS/2) - 13, "col: %d entered: %d guess: %s test", col, entered, guess);
 
 	} while (key != 27);
 	if(win == true){
